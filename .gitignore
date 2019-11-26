@@ -96,3 +96,5 @@ sandbox
 
 # mypy
 .mypy_cache/
+
+.vscode
