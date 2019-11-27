@@ -1,3 +1,4 @@
+import cv2
 import logging
 
 from pathlib import Path
@@ -18,3 +19,10 @@ class Logger:
     @staticmethod
     def error(message):
         Logger.logger.error("{} - {}".format(datetime.now(), message))
+
+class FaceDetector:
+    detector = cv2.CascadeClassifier("faces.xml")
+
+    @staticmethod
+    def detect(img, scaleFactor, minNeighbours):
+        return FaceDetector.detector.detectMultiScale(img, scaleFactor, minNeighbours)
