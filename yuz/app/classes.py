@@ -1,9 +1,9 @@
 
 
 class Photo:
-    def __init__(self, original, cropped = []):
+    def __init__(self, original):
         self._original = original
-        self._cropped = cropped
+        self._cropped = []
 
     def get_original(self):
         return self._original
