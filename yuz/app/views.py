@@ -8,6 +8,7 @@ from PIL import Image
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated 
 
 from .utils import Logger
 from .classes import Photo
@@ -15,13 +16,28 @@ from .utils import FaceDetector
 from .serializers import OriginalPhotoSerializer, CroppedPhotoSerializer
 
 
-class RootEndpoint(APIView):
+class RootView(APIView):
     def get(self, request):
-        Logger.info("RootEndpoint - GET")
+        Logger.info("RootView - GET")
         return Response({"message": "yuz back-end"})
 
+class RegisterView(APIView):
+    def post(self, request):
+        Logger.info("RegisterEndpoint - POST")
+        # Validate and register user
+        return Response({"message": "Registered"})
+
+class LogoutView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        Logger.info("Logout - {}".format(request.user))
+        request.user.auth_token.delete()
+        return Response({"message": "Token was removed"})
 
 class ExtractorEndpoint(APIView):
+    permission_classes = (IsAuthenticated,)
+
     def post(self, request):
         Logger.info("ExtractorEndpoint - POST")
         try:
