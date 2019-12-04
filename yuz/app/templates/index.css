@@ -1,0 +1,77 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    color: white;
+}
+
+.page-container {
+    background-color: #ffd78c;
+    font-family: 'Roboto', sans-serif;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+}
+
+nav {
+    background-color: black;
+    width: 100%;
+    min-height: 50px;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+}
+
+nav:first-child {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+nav:first-child a {
+    color: white;
+    text-decoration: none;
+    margin-right: 10px;
+    display: inline-block;
+}
+
+nav:first-child a:hover {
+    color: orange;
+}
+
+section {
+    color: black;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    background: #D8DCA0 url('http://localhost:8081/static/photo.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: 0 auto;
+    width: 40%;
+    min-height: 50vh;
+    padding-top: 10vh;
+    user-select: none;
+}
+
+section img {
+    user-select: none;
+}
+
+.drop-message {
+    user-select: none;
+    cursor: default;
+}
+
+.on-drag {
+    background-color: darkred;
+    box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+}
+
+@media only screen and (max-width: 1200px) {
+    nav:first-child a {
+        font-size: 1em;
+    }
+    section {
+        width: 95%;
+    }
+}

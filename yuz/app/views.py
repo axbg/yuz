@@ -8,15 +8,17 @@ from PIL import Image
 from django.db.models import Q
 from django.shortcuts import render
 from rest_framework.views import APIView
+from django.views.generic.base import View
 from django.contrib.auth.models import User
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated 
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.permissions import IsAuthenticated
 
 from .utils import Logger
 from .classes import Photo
 from .utils import FaceDetector
 from .serializers import OriginalPhotoSerializer, CroppedPhotoSerializer
-
 
 class RootView(APIView):
     def get(self, request):
@@ -41,14 +43,6 @@ class RegisterView(APIView):
         User.objects.create_user(**data)
         return Response({"message": "Registered"})
 
-class LogoutView(APIView):
-    permission_classes = (IsAuthenticated,)
-
-    def post(self, request):
-        Logger.info("Logout - {}".format(request.user))
-        request.user.auth_token.delete()
-        return Response({"message": "Token was removed"})
-
 class ExtractorEndpoint(APIView):
     permission_classes = (IsAuthenticated,)
 
@@ -70,3 +64,22 @@ class ExtractorEndpoint(APIView):
         except Exception as e:
             print(e)
             return Response({"message": "nasty error happened"}, status=500)
+
+class LogoutView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def post(self, request):
+        Logger.info("Logout - {}".format(request.user))
+        request.user.auth_token.delete()
+        return Response({"message": "Token was removed"})
+
+@method_decorator(csrf_exempt, name='dispatch')
+class WebView(View):
+    get_template = None
+    post_template = None
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.get_template)
+
+    def post(self, request, *args, **kwargs):
+        return render(request, self.post_template)

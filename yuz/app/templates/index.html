@@ -1,0 +1,27 @@
+<html>
+
+<head>
+    <!--{% load static %}-->
+    <title>yuz - all about faces</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="index.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="page-container" ondrop="disableDrop(event)" ondragover="disableDrag(event)">
+        <nav>
+            <div>
+                <a class="drop-message">Drop your photo in the box</a>
+                <a href="#">About</a>
+                <a href="#">Contact</a>
+            </div>
+        </nav>
+        <section class="drop-zone" ondrop="drop(event)" ondragover="dragOver(event)" ondragleave="dragLeave(event)">
+        </section>
+    </div>
+    <script src="index.js"></script>
+</body>
+
+</html>
