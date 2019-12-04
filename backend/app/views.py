@@ -5,8 +5,10 @@ import base64
 import numpy as np
 
 from PIL import Image
+from django.db.models import Q
 from django.shortcuts import render
 from rest_framework.views import APIView
+from django.contrib.auth.models import User
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated 
 
@@ -24,7 +26,19 @@ class RootView(APIView):
 class RegisterView(APIView):
     def post(self, request):
         Logger.info("RegisterEndpoint - POST")
-        # Validate and register user
+        data = json.loads(request.body)
+
+        try:
+            assert "username" in data and data["username"] != "", "username missing from request"
+            assert "password" in data and data["password"] != "", "password missing from request"
+            assert "email" in data and data["email"] != "", "email missing from request"
+            assert len(data["password"]) > 8, "password should have at least 8 characters"
+            assert "@" in data["email"] and "." in data["email"] and len(data["email"]) > 11, "invalid email"
+            assert len(User.objects.filter(Q(username=data["username"]) | Q(email=data["email"]))) == 0, "username or email already registered"
+        except AssertionError as ae:
+            return Response({"message": ae.args[0]}, status=400)
+        
+        User.objects.create_user(**data)
         return Response({"message": "Registered"})
 
 class LogoutView(APIView):
