@@ -1,11 +1,11 @@
 <html>
 
 <head>
-    <!--{% load static %}-->
+    {% load static %}
     <title>yuz - all about faces</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="{% static "css/index.css"%}">
     <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
 </head>
 
@@ -21,7 +21,7 @@
         <section class="drop-zone" ondrop="drop(event)" ondragover="dragOver(event)" ondragleave="dragLeave(event)">
         </section>
     </div>
-    <script src="index.js"></script>
+    <script src="{% static "js/index.js"%}"></script>
 </body>
 
 </html>

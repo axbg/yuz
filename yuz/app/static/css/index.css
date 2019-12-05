@@ -57,6 +57,10 @@ section img {
     user-select: none;
 }
 
+#image-form {
+
+}
+
 .drop-message {
     user-select: none;
     cursor: default;

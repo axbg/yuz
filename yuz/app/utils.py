@@ -1,8 +1,15 @@
+import io
 import cv2
+import json
+import base64
 import logging
+import numpy as np
 
+from PIL import Image
 from pathlib import Path
 from datetime import datetime
+
+from .serializers import OriginalPhotoSerializer
 
 class Logger:
     logging.basicConfig(filename = 'yuz.log', level=logging.INFO)
@@ -22,6 +29,20 @@ class Logger:
 
 class FaceDetector:
     detector = cv2.CascadeClassifier("faces.xml")
+
+    @staticmethod
+    def prepare_photo(body):
+        photo = OriginalPhotoSerializer(data=json.loads(body)).create()
+        stream = base64.b64decode(photo.get_original())
+        cv_image = cv2.cvtColor(np.array(Image.open(io.BytesIO(stream))), cv2.COLOR_BGR2RGB)
+            
+        faces = FaceDetector.detect(cv_image, 1.05, 6)
+
+        for(x, y, w, h) in faces:
+            cropped_face = cv_image[int(y-(h/4)):int(y+h*2), int(x-(w/2)):int(x+w*1.5)]
+            _, buffer = cv2.imencode('.jpg', cropped_face)
+            photo.add_cropped_photo(base64.b64encode(buffer).decode('utf-8'))        
+        return photo
 
     @staticmethod
     def detect(img, scaleFactor, minNeighbours):

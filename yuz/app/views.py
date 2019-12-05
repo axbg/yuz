@@ -1,12 +1,9 @@
-import io
-import cv2
 import json
-import base64
-import numpy as np
 
-from PIL import Image
 from django.db.models import Q
+from django.conf import settings
 from django.shortcuts import render
+from django.http import HttpResponse
 from rest_framework.views import APIView
 from django.views.generic.base import View
 from django.contrib.auth.models import User
@@ -49,17 +46,7 @@ class ExtractorEndpoint(APIView):
     def post(self, request):
         Logger.info("ExtractorEndpoint - POST")
         try:
-            photo = OriginalPhotoSerializer(data=json.loads(request.body)).create()
-            stream = base64.b64decode(photo.get_original())
-            cv_image = cv2.cvtColor(np.array(Image.open(io.BytesIO(stream))), cv2.COLOR_BGR2RGB)
-            
-            faces = FaceDetector.detect(cv_image, 1.05, 6)
-
-            for(x, y, w, h) in faces:
-                cropped_face = cv_image[int(y-(h/4)):int(y+h*2), int(x-(w/2)):int(x+w*1.5)]
-                _, buffer = cv2.imencode('.jpg', cropped_face)
-                photo.add_cropped_photo(base64.b64encode(buffer).decode('utf-8'))
-
+            photo = FaceDetector.prepare_photo(request.body)
             return Response(CroppedPhotoSerializer(photo).data)
         except Exception as e:
             print(e)
@@ -74,7 +61,7 @@ class LogoutView(APIView):
         return Response({"message": "Token was removed"})
 
 @method_decorator(csrf_exempt, name='dispatch')
-class WebView(View):
+class WebView(APIView):
     get_template = None
     post_template = None
 
@@ -82,4 +69,10 @@ class WebView(View):
         return render(request, self.get_template)
 
     def post(self, request, *args, **kwargs):
-        return render(request, self.post_template)
+        context = {}
+        try:
+            assert 'Origin' in request.headers and request.headers['Origin'] == settings.ALLOWED_ORIGIN, "Origin missing or not valid"
+            photo = FaceDetector.prepare_photo(request.body)
+        except AssertionError as e:
+            return Response({"message": e.args[0]}, status=400)
+        return Response(CroppedPhotoSerializer(photo).data)
