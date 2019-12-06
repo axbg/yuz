@@ -71,7 +71,7 @@ class WebView(APIView):
     def post(self, request, *args, **kwargs):
         context = {}
         try:
-            assert 'Origin' in request.headers and request.headers['Origin'] == settings.ALLOWED_ORIGIN, "Origin missing or not valid"
+            assert 'Origin' in request.headers, "Origin missing or not valid"
             photo = FaceDetector.prepare_photo(request.body)
         except AssertionError as e:
             return Response({"message": e.args[0]}, status=400)

@@ -43,7 +43,7 @@ nav:first-child a:hover {
 section {
     color: black;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-    background: #D8DCA0 url('http://localhost:8081/static/photo.png');
+    background: #D8DCA0 url('../img/photo.png');
     background-repeat: no-repeat;
     background-position: center;
     margin: 0 auto;

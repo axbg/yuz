@@ -24,7 +24,6 @@ SECRET_KEY = '_$*_nlewkr#9xux54lpk4v$sxq4gnpoq@$mb)4a_7m9i%yv84+'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_ORIGIN = "http://localhost:8081"
 ALLOWED_HOSTS = []
 
 

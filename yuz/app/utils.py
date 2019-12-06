@@ -31,6 +31,23 @@ class FaceDetector:
     detector = cv2.CascadeClassifier("faces.xml")
 
     @staticmethod
+    def compute_ratio(ix, iy, iw):
+        x = int(ix-(iw/2))
+        w = int(iw*2)
+
+        if x < 0:
+            w += x
+            x = 0
+        
+        h = int(w * 1.25)
+        y = int(iy-(h/4))
+
+        if y < 0:
+            y = 0
+
+        return x, y, w, h
+
+    @staticmethod
     def prepare_photo(body):
         photo = OriginalPhotoSerializer(data=json.loads(body)).create()
         stream = base64.b64decode(photo.get_original())
@@ -39,7 +56,8 @@ class FaceDetector:
         faces = FaceDetector.detect(cv_image, 1.05, 6)
 
         for(x, y, w, h) in faces:
-            cropped_face = cv_image[int(y-(h/4)):int(y+h*2), int(x-(w/2)):int(x+w*1.5)]
+            x, y, w, h = FaceDetector.compute_ratio(x, y, w)
+            cropped_face = cv_image[y:y+h, x:x+w]
             _, buffer = cv2.imencode('.jpg', cropped_face)
             photo.add_cropped_photo(base64.b64encode(buffer).decode('utf-8'))        
         return photo
