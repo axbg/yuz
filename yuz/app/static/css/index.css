@@ -11,6 +11,7 @@ html, body {
     height: 100%;
     width: 100%;
     text-align: center;
+    overflow-y: auto;
 }
 
 nav {
@@ -43,22 +44,23 @@ nav:first-child a:hover {
 section {
     color: black;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-    background: #D8DCA0 url('../img/photo.png');
-    background-repeat: no-repeat;
-    background-position: center;
+    background: #D8DCA0;
     margin: 0 auto;
     width: 40%;
     min-height: 50vh;
     padding-top: 10vh;
     user-select: none;
+    margin-bottom: 10px;
+}
+
+.drop-zone-background {
+    background: #D8DCA0 url('../img/photo.png');
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 section img {
     user-select: none;
-}
-
-#image-form {
-
 }
 
 .drop-message {

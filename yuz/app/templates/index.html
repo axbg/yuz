@@ -5,7 +5,8 @@
     <title>yuz - all about faces</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="{% static "css/index.css"%}">
+    <link rel="icon" href="{% static "img/photo.png" %}">
+    <link rel="stylesheet" href="{% static "css/index.css" %}">
     <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
 </head>
 
@@ -14,11 +15,9 @@
         <nav>
             <div>
                 <a class="drop-message">Drop your photo in the box</a>
-                <a href="#">About</a>
-                <a href="#">Contact</a>
             </div>
         </nav>
-        <section class="drop-zone" ondrop="drop(event)" ondragover="dragOver(event)" ondragleave="dragLeave(event)">
+        <section class="drop-zone-background drop-zone" ondrop="drop(event)" ondragover="dragOver(event)" ondragleave="dragLeave(event)">
         </section>
     </div>
     <script src="{% static "js/index.js"%}"></script>

@@ -19,7 +19,6 @@ function dragLeave(event) {
 
 function drop(event) {
     event.preventDefault();
-    dropZone.classList.remove("on-drag");
     dropMessage.textContent = "Processing your image";
     const file = event.dataTransfer.files[0];
     base64encoder(file)
@@ -32,10 +31,21 @@ function drop(event) {
                 .then(res => res.json())
                 .then(res => {
                     res["cropped"].forEach(crop => {
-
-                        console.log(crop);
+                        const image = document.createElement("img");
+                        image.src = "data:image/png;base64," + crop;
+                        image.width = 250;
+                        image.height = 312;
+                        image.style.margin = 10;
+                        dropZone.appendChild(image);
                     })
-                    dropMessage.textContent = "??? profit";
+                    const refreshPage = document.createElement("a");
+                    refreshPage.href = "/";
+                    refreshPage.textContent = "Need one more round?";
+                    dropMessage.parentElement.appendChild(refreshPage);
+
+                    dropMessage.textContent = "There you go!";
+                    dropZone.classList.remove("on-drag");
+                    dropZone.classList.remove('drop-zone-background');
                 })
         })
         .catch(() => {
