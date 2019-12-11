@@ -29,7 +29,10 @@ function drop(event) {
             dropZone.appendChild(createImage(trimmedResult, 250, 312, 10));
             fetch("/", {
                 method: "POST",
-                body: JSON.stringify({ original: trimmedResult })
+                body: JSON.stringify({ original: trimmedResult }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
             })
                 .then(res => res.json())
                 .then(res => {

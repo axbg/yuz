@@ -11,10 +11,11 @@ from rest_framework.response import Response
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.permissions import IsAuthenticated
+from django.core.files.uploadedfile import InMemoryUploadedFile
 
 from .utils import Logger
 from .classes import Photo
-from .utils import FaceDetector
+from .utils import FaceDetector, ImageTransformer
 from .serializers import OriginalPhotoSerializer, CroppedPhotoSerializer
 
 class RootView(APIView):
@@ -46,7 +47,12 @@ class ExtractorEndpoint(APIView):
     def post(self, request):
         Logger.info("ExtractorEndpoint - POST")
         try:
-            photo = FaceDetector.prepare_photo(request.body)
+            original = request.data['original']
+
+            if type(original) == InMemoryUploadedFile: 
+                original = ImageTransformer.imageToBase64(original)
+
+            photo = FaceDetector.prepare_photo(original)
             return Response(CroppedPhotoSerializer(photo).data)
         except Exception as e:
             print(e)
@@ -69,10 +75,9 @@ class WebView(APIView):
         return render(request, self.get_template)
 
     def post(self, request, *args, **kwargs):
-        context = {}
         try:
             assert 'Origin' in request.headers, "Origin missing or not valid"
-            photo = FaceDetector.prepare_photo(request.body)
+            photo = FaceDetector.prepare_photo(request.data['original'])
         except AssertionError as e:
             return Response({"message": e.args[0]}, status=400)
         return Response(CroppedPhotoSerializer(photo).data)

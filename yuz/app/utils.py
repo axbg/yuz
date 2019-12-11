@@ -10,6 +10,7 @@ from pathlib import Path
 from datetime import datetime
 
 from .serializers import OriginalPhotoSerializer
+from .classes import Photo
 
 class Logger:
     logging.basicConfig(filename = 'yuz.log', level=logging.INFO)
@@ -48,8 +49,8 @@ class FaceDetector:
         return x, y, w, h
 
     @staticmethod
-    def prepare_photo(body):
-        photo = OriginalPhotoSerializer(data=json.loads(body)).create()
+    def prepare_photo(photo_b):
+        photo = Photo(photo_b)
         stream = base64.b64decode(photo.get_original())
         cv_image = cv2.cvtColor(np.array(Image.open(io.BytesIO(stream))), cv2.COLOR_BGR2RGB)
             
@@ -65,3 +66,9 @@ class FaceDetector:
     @staticmethod
     def detect(img, scaleFactor, minNeighbours):
         return FaceDetector.detector.detectMultiScale(img, scaleFactor, minNeighbours)
+
+class ImageTransformer:
+
+    @staticmethod
+    def imageToBase64(original):
+        return base64.b64encode(original.read())
