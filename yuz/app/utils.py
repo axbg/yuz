@@ -53,7 +53,7 @@ class FaceDetector:
         stream = base64.b64decode(photo.get_original())
         cv_image = cv2.cvtColor(np.array(Image.open(io.BytesIO(stream))), cv2.COLOR_BGR2RGB)
             
-        faces = FaceDetector.detect(cv_image, 1.05, 6)
+        faces = FaceDetector.detect(cv_image, 1.4, 3)
 
         for(x, y, w, h) in faces:
             x, y, w, h = FaceDetector.compute_ratio(x, y, w)
