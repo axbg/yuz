@@ -34,7 +34,7 @@ class FaceDetector:
     @staticmethod
     def compute_ratio(ix, iy, iw):
         x = int(ix-(iw/2))
-        w = int(iw*2)
+        w = iw*2
 
         if x < 0:
             w += x
