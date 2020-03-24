@@ -1,4 +1,4 @@
-<html>
+<html lang="eng">
 
 <head>
     {% load static %}
@@ -11,16 +11,18 @@
 </head>
 
 <body>
-    <div class="page-container" ondrop="disableDrop(event)" ondragover="disableDrag(event)">
-        <nav>
-            <div>
-                <a class="drop-message">Drop your photo in the box</a>
-            </div>
-        </nav>
-        <section class="drop-zone-background drop-zone" ondrop="drop(event)" ondragover="dragOver(event)" ondragleave="dragLeave(event)">
-        </section>
-    </div>
-    <script src="{% static "js/index.js"%}"></script>
+<div class="page-container" ondrop="disableDrop(event)" ondragover="disableDrag(event)">
+    <nav>
+        <button id="download-btn" class="btn download-all-btn" onclick="downloadAll()">Download all</button>
+        <div>
+            <a class="drop-message">Drop your photo in the box</a>
+        </div>
+    </nav>
+    <section class="drop-zone-background drop-zone" ondrop="drop(event)" ondragover="dragOver(event)"
+             ondragleave="dragLeave(event)">
+    </section>
+</div>
+<script src="{% static "js/index.js" %}"></script>
 </body>
 
 </html>
