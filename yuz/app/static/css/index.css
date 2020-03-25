@@ -1,17 +1,18 @@
+/* Tags */
+:root {
+    --background-color: #FFD78C;
+    --container-color: #D8DCA0;
+    --text-color: white;
+    --accent-color: orange;
+    --dark-accent-color: darkred;
+    --navbar-color: black;
+}
+
 html, body {
     width: 100%;
     height: 100%;
     margin: 0;
     color: white;
-}
-
-.page-container {
-    background-color: #ffd78c;
-    font-family: 'Roboto', sans-serif;
-    height: 100%;
-    width: 100%;
-    text-align: center;
-    overflow-y: auto;
 }
 
 nav {
@@ -21,6 +22,7 @@ nav {
     position: -webkit-sticky;
     position: sticky;
     top: 0;
+    z-index: 2;
 }
 
 nav:first-child {
@@ -31,18 +33,34 @@ nav:first-child {
 }
 
 nav:first-child a {
-    color: white;
+    color: var(--text-color);
     text-decoration: none;
     margin-right: 10px;
     display: inline-block;
 }
 
 nav:first-child a:hover {
-    color: orange;
+    color: var(--accent-color);
 }
 
+section {
+    color: var(--navbar-color);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    background: var(--container-color);
+    width: 40%;
+    min-height: 50vh;
+    padding-top: 10vh;
+    user-select: none;
+    margin: 0 auto 10px;
+}
+
+section img {
+    user-select: none;
+}
+
+/* Classes */
 .btn {
-    background-color: orange;
+    background-color: var(--accent-color);
     color: white;
     border: none;
     padding: 5px 15px;
@@ -62,26 +80,31 @@ nav:first-child a:hover {
     margin: 5px;
 }
 
-section {
-    color: black;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-    background: #D8DCA0;
-    margin: 0 auto;
-    width: 40%;
-    min-height: 50vh;
-    padding-top: 10vh;
-    user-select: none;
-    margin-bottom: 10px;
+.page-container {
+    background-color: var(--background-color);
+    font-family: 'Roboto', sans-serif;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    overflow-y: auto;
+}
+
+.drop-zone {
+    position: relative;
 }
 
 .drop-zone-background {
-    background: #D8DCA0 url('../img/photo.png');
+    background: var(--container-color) url('../img/photo.png');
     background-repeat: no-repeat;
     background-position: center;
 }
 
-section img {
-    user-select: none;
+.processing-text-container {
+    bottom: 0;
+    text-align: center;
+    position: absolute;
+    width: 100%;
+    color: white;
 }
 
 .drop-message {
@@ -90,10 +113,42 @@ section img {
 }
 
 .on-drag {
-    background-color: darkred;
+    background-color: var(--dark-accent-color);
     box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(0, 0, 0, 0.22);
 }
 
+
+/* Loading spinner */
+.spinner {
+    border: 16px solid var(--background-color);
+    border-radius: 50%;
+    border-top: 16px solid var(--dark-accent-color);
+    width: 150px;
+    height: 150px;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+}
+
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Media queries */
 @media only screen and (max-width: 1200px) {
     nav:first-child a {
         font-size: 1em;

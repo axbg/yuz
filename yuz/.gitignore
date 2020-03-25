@@ -98,3 +98,4 @@ sandbox
 .mypy_cache/
 
 .vscode
+.idea

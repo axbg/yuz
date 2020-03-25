@@ -19,36 +19,31 @@ function dragLeave(event) {
 function drop(event) {
     event.preventDefault();
     dropMessage.textContent = "Processing your image";
-    const file = event.dataTransfer.files[0];
+    dropZone.background = "transparent";
+    const files = event.dataTransfer.files;
 
-    base64encoder(file)
-        .then(result => {
-            const trimmedResult = result.split(",")[1];
-            removeChildren(dropZone);
-            dropZone.appendChild(createImage(trimmedResult, 250, 312, 10));
-            fetch("/", {
-                method: "POST",
-                body: JSON.stringify({original: trimmedResult}),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-                .then(res => res.json())
-                .then(res => {
-                    removeChildren(dropZone);
-                    res["cropped"].forEach(crop => {
-                        dropZone.appendChild(createImage(crop, 250, 312, 10));
-                    });
+    toggleDynamicBackground(files.length);
 
-                    document.getElementById("download-btn").style.display = "block";
-                    dropMessage.textContent = "There you go!";
-                    dropZone.classList.remove("on-drag");
-                    dropZone.classList.remove('drop-zone-background');
+    let images = new FormData();
+    for (let i = 0; i < files.length; i++) {
+        images.append("image_" + i, files[i]);
+    }
+
+    fetch("/", {
+        method: "POST",
+        body: images,
+    })
+        .then(res => res.json())
+        .then(res => {
+            toggleDynamicBackground();
+            if (res["cropped"].length === 0) {
+                dropZone.appendChild(createText("No faces detected 😢", "black"));
+            } else {
+                res["cropped"].forEach(crop => {
+                    dropZone.appendChild(createImage(crop, 250, 312, 10));
                 });
-        })
-        .catch(() => {
-            console.log("Error happened when encoding");
-        })
+            }
+        });
 }
 
 function disableDrop(event) {
@@ -59,17 +54,40 @@ function disableDrag(event) {
     event.preventDefault();
 }
 
-function base64encoder(file) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => {
-            resolve(reader.result);
-        };
-        reader.onerror = () => {
-            reject();
-        };
-    });
+function toggleDynamicBackground(elements) {
+    if (elements) {
+        removeChildren(dropZone);
+        const text = elements === 1 ? "Processing your image" : "Processing " + elements + " images";
+        dropZone.appendChild(createSpinner());
+        dropZone.appendChild(createText(text, "white"));
+        dropZone.style.backgroundImage = "none";
+    } else {
+        removeChildren(dropZone);
+        document.getElementById("download-btn").style.display = "block";
+        dropMessage.textContent = "There you go!";
+        dropZone.classList.remove("on-drag");
+        dropZone.classList.remove('drop-zone-background');
+    }
+}
+
+function createSpinner() {
+    const spinner = document.createElement("div");
+    spinner.classList.add("spinner");
+    spinner.classList.add("dynamic");
+    return spinner;
+}
+
+function createText(text, color) {
+    const content = document.createElement("h4");
+    content.textContent = text;
+    content.style.color = color;
+
+    const contentContainer = document.createElement("div");
+    contentContainer.classList.add("processing-text-container");
+    contentContainer.classList.add("dynamic");
+    contentContainer.appendChild(content);
+
+    return contentContainer;
 }
 
 function createImage(b64, width, height, margin) {
@@ -84,6 +102,7 @@ function createImage(b64, width, height, margin) {
     a.classList.add("downloadable");
     a.download = "yuz_result.png";
     a.appendChild(image);
+
     return a;
 }
 
