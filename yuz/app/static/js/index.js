@@ -3,7 +3,10 @@ const dropMessage = document.getElementsByClassName("drop-message")[0];
 const form = document.getElementById("image-form");
 
 function dragOver(event) {
-    event.preventDefault();
+    if (event) {
+        event.preventDefault();
+    }
+
     if (!dropZone.classList.contains("on-drag")) {
         dropZone.classList.add("on-drag");
         dropMessage.textContent = "Yes, yes, there";
@@ -17,10 +20,18 @@ function dragLeave(event) {
 }
 
 function drop(event) {
-    event.preventDefault();
+    let files;
+
+    if (event.dataTransfer) {
+        event.preventDefault();
+        files = event.dataTransfer.files;
+    } else {
+        files = event;
+        dragOver();
+    }
+
     dropMessage.textContent = "Processing your image";
     dropZone.background = "transparent";
-    const files = event.dataTransfer.files;
 
     toggleDynamicBackground(files.length);
 
@@ -44,6 +55,14 @@ function drop(event) {
                 });
             }
         });
+}
+
+function triggerClickUpload() {
+    document.getElementById("hidden-upload").click();
+}
+
+function clickUpload(event) {
+    drop(event.target.files);
 }
 
 function disableDrop(event) {

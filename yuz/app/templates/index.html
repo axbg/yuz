@@ -21,6 +21,8 @@
     <section class="drop-zone-background drop-zone" ondrop="drop(event)" ondragover="dragOver(event)"
              ondragleave="dragLeave(event)">
     </section>
+    <button id="upload-btn" class="btn upload-btn" onclick="triggerClickUpload()">Upload</button>
+    <input type="file" id="hidden-upload" class="hidden-upload" onchange="clickUpload(event)"/>
 </div>
 <script src="{% static "js/index.js" %}"></script>
 </body>
