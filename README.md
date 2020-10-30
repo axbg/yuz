@@ -3,7 +3,6 @@
 
 ##### Deployment
 * Docker
-  * ```docker pull axbg/yuz```
   * ```docker run -d -p prefered_port:8080 --name yuz axbg/yuz```
 * Manually
   * Install >python3.7
