@@ -1,4 +1,4 @@
-Django==2.2.21
+Django==2.2.22
 djangorestframework==3.11.2
 opencv-python==4.1.2.30
 Pillow>=7.1.0
