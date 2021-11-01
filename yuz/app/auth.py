@@ -1,7 +1,7 @@
-
 from rest_framework.authentication import TokenAuthentication
 
 from .utils import Logger
+
 
 class BearerAuthentication(TokenAuthentication):
     keyword = "Bearer"

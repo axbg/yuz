@@ -51,7 +51,7 @@ class ExtractorEndpoint(APIView):
             original = request.data['original']
 
             if type(original) == InMemoryUploadedFile:
-                original = ImageTransformer.imageToBase64(original)
+                original = ImageTransformer.image_to_b64(original)
 
             photo = FaceDetector.prepare_photo(original)
             return Response(CroppedPhotoSerializer(photo).data)
@@ -82,7 +82,7 @@ class WebView(APIView):
             assert 'Origin' in request.headers, "Origin missing or not valid"
             formatted_photo = Photo(None)
             for image in request.data.items():
-                base64 = ImageTransformer.imageToBase64(image[1])
+                base64 = ImageTransformer.image_to_b64(image[1])
                 processed_photos = FaceDetector.prepare_photo(base64)
                 for processed_photo in processed_photos.get_cropped():
                     formatted_photo.add_cropped_photo(processed_photo)

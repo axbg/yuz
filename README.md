@@ -1,5 +1,5 @@
 # yuz
-#### A python-based web service & web app that allows portraits extraction from a photo
+#### A Python-based web service & web app that allows portraits extraction from a photo
 
 ##### Deployment
 * Docker
@@ -9,7 +9,8 @@
   * Optional: create and activate a virtual environment
   * navigate to /yuz
   * run *"pip install -r requirements.txt"*
-  * Optional: change the database from sqlite3 [to your preffered provider](https://docs.djangoproject.com/en/3.0/topics/db/multi-db/)
+  * Optional: change the database from
+    sqlite3 [to your preferred provider](https://docs.djangoproject.com/en/3.0/topics/db/multi-db/)
   * run *"python manage.py migrate"*
   * run *"python manage.py runserver"*
   * go and extract some faces
